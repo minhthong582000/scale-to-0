@@ -37,3 +37,6 @@ go.work.sum
 # Helm dependencies fetched by `make deps`
 deploy/k8s/charts/*/charts/
 deploy/k8s/charts/*/Chart.lock
+
+# Go build output
+/bin/
