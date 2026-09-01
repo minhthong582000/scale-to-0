@@ -1,0 +1,87 @@
+kube-prometheus-stack:
+  crds:
+    enabled: true
+
+  grafana:
+    enabled: false
+
+  alertmanager:
+    enabled: false
+
+  defaultRules:
+    create: false
+
+  kubelet:
+    enabled: true
+
+  kubeApiServer:
+    enabled: true
+
+  coreDns:
+    enabled: true
+
+  kubeControllerManager:
+    enabled: false
+
+  kubeScheduler:
+    enabled: false
+
+  kubeEtcd:
+    enabled: false
+
+  kubeProxy:
+    enabled: false
+
+  kube-state-metrics:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+
+  prometheus-node-exporter:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 64Mi
+
+  prometheusOperator:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+    prometheusConfigReloader:
+      resources:
+        requests:
+          cpu: 5m
+          memory: 32Mi
+        limits:
+          memory: 32Mi
+
+  prometheus:
+    service:
+      type: NodePort
+      nodePort: 30090
+
+    prometheusSpec:
+      retention: 2h
+      scrapeInterval: 15s
+      evaluationInterval: 30s
+
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      probeSelectorNilUsesHelmValues: false
+      scrapeConfigSelectorNilUsesHelmValues: false
+      ruleSelectorNilUsesHelmValues: false
+
+      resources:
+        requests:
+          cpu: 100m
+          memory: 768Mi
+        limits:
+          memory: 768Mi

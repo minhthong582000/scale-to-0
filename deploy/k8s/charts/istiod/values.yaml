@@ -1,0 +1,24 @@
+istiod:
+  pilot:
+    replicaCount: 1
+    autoscaleEnabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        memory: 256Mi
+
+  global:
+    proxy:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          cpu: null
+          memory: 128Mi
+
+  meshConfig:
+    accessLogFile: /dev/stdout
+    enablePrometheusMerge: true

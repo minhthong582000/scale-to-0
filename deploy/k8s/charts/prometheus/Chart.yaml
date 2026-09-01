@@ -1,0 +1,9 @@
+apiVersion: v2
+name: prometheus
+description: Prometheus Operator stack providing the scale-to-zero traffic signal
+type: application
+version: 0.1.0
+dependencies:
+  - name: kube-prometheus-stack
+    version: 88.6.2
+    repository: https://prometheus-community.github.io/helm-charts
