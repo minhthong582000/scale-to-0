@@ -1,4 +1,4 @@
-# scale-to-0
+# scale-to-0 (WIP)
 
 ## How it works
 
