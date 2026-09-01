@@ -51,4 +51,4 @@ spec:
       retries:
         attempts: 100
         perTryTimeout: 1s
-        retryOn: "connect-failure,refused-stream,unavailable,5xx,reset"
+        retryOn: "connect-failure,refused-stream,unavailable,reset"
