@@ -16,6 +16,8 @@ SYSTEM_NS := kube-system
 
 CHARTS := istio-base istiod istio-gateway keda prometheus metrics-server
 
+SCALER_IMAGE ?= scale-to-zero/scaler:dev
+
 WAIT_TIMEOUT ?= 300s
 
 # $(call helm_install,<release>,<chart dir>,<namespace>)
@@ -41,6 +43,29 @@ up: cluster deps istio keda metrics-server prometheus webapp status ## Create th
 
 .PHONY: down
 down: cluster-delete ## Delete the whole cluster
+
+## --------------------------------------------------------------------------
+## Scaler
+## --------------------------------------------------------------------------
+
+.PHONY: test
+test: ## Run the Go tests
+	go vet ./...
+	go test ./...
+
+.PHONY: build
+build: ## Build the scaler binary into bin/
+	go build -trimpath -o bin/scaler ./cmd/scaler
+
+.PHONY: image
+image: ## Build the scaler container image
+	docker build -t $(SCALER_IMAGE) .
+
+.PHONY: proto
+proto: ## Regenerate the KEDA external scaler bindings from proto/
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	PATH="$$(go env GOPATH)/bin:$$PATH" go run github.com/bufbuild/buf/cmd/buf@v1.58.0 generate
 
 ## --------------------------------------------------------------------------
 ## Cluster

@@ -15,6 +15,23 @@ spec:
         - "*"
 ---
 apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: webapp-wake
+  namespace: demo
+spec:
+  hosts:
+    - webapp-wake.internal
+  location: MESH_INTERNAL
+  resolution: DNS
+  ports:
+    - number: 80
+      name: http
+      protocol: HTTP
+  endpoints:
+    - address: webapp.demo.svc.cluster.local
+---
+apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: webapp
@@ -27,6 +44,11 @@ spec:
   http:
     - route:
         - destination:
-            host: webapp.demo.svc.cluster.local
+            host: webapp-wake.internal
             port:
               number: 80
+      timeout: 120s
+      retries:
+        attempts: 100
+        perTryTimeout: 1s
+        retryOn: "connect-failure,refused-stream,unavailable,reset"
