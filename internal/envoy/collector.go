@@ -18,9 +18,9 @@ import (
 	"github.com/minhthong582000/scale-to-0/internal/activity"
 )
 
-// DefaultRequestPattern matches the counters that mean "a request was served":
-// Istio's telemetry counter, and Envoy's own inbound listener counter as a
-// fallback for proxies without the Istio stats filter.
+// DefaultRequestPattern matches counters interpreted as "a request was served":
+// Istio's telemetry counter and Envoy's inbound listener counter. If both are
+// present in a batch, their counts are summed.
 const DefaultRequestPattern = `istio_requests_total|downstream_rq_total`
 
 // unknownNameLogLimit caps how many distinct unmatched metric names are logged
